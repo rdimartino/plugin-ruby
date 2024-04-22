@@ -7,7 +7,12 @@ require "socket"
 require "syntax_tree"
 
 # Optional dependencies
-%W[syntax_tree/rbs syntax_tree/haml prettier_print].each do |dep|
+%W[
+  syntax_tree/rbs
+  syntax_tree/haml
+  syntax_tree/erb
+  prettier_print
+].each do |dep|
   begin
     require dep
   rescue LoadError
@@ -131,6 +136,11 @@ listener =
               end
 
             SyntaxTree::Haml.parse(source).format(formatter)
+            formatter.flush
+            formatter.output
+          when "erb"
+            formatter = PrettierPrint.new(+"", maxwidth, "\n", &genspace)
+            SyntaxTree::ERB.parse(source).format(formatter)
             formatter.flush
             formatter.output
           end

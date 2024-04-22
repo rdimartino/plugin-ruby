@@ -270,6 +270,12 @@ const plugin = {
       parsers: ["haml"],
       extensions: [".haml"],
       vscodeLanguageIds: ["haml"]
+    },
+    {
+      name: "ERB",
+      parsers: ["erb"],
+      extensions: [".erb"],
+      vscodeLanguageIds: ["erb"]
     }
   ],
   parsers: {
@@ -317,6 +323,21 @@ const plugin = {
       locEnd() {
         return 0;
       }
+    },
+    erb: {
+      parse(text, opts) {
+        return parse("erb", text, opts);
+      },
+      astFormat: "erb",
+      hasPragma(text) {
+        return /^\s*<%#\s*@(prettier|format)/.test(text);
+      },
+      locStart() {
+        return 0;
+      },
+      locEnd() {
+        return 0;
+      }
     }
   },
   printers: {
@@ -342,6 +363,14 @@ const plugin = {
       },
       insertPragma(text) {
         return `-# @format${text.startsWith("-#") ? "\n" : "\n\n"}${text}`;
+      }
+    },
+    erb: {
+      print(path) {
+        return path.getValue();
+      },
+      insertPragma(text) {
+        return `<%# @format %>${text.startsWith("<%#") ? "\n" : "\n\n"}${text}`;
       }
     }
   },

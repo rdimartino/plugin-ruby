@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "syntax_tree", ">= 4.0.1"
   spec.add_dependency "syntax_tree-haml", ">= 2.0.0"
   spec.add_dependency "syntax_tree-rbs", ">= 0.2.0"
+  spec.add_dependency "w_syntax_tree-erb", "~> 0.11"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "minitest"
